@@ -1,9 +1,14 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
+import { useHeader } from "@/hooks/useHeader";
+import { useEffect } from "react";
 
 export default function Home() {
-  return (
-    <div>
-      <Button>Click me</Button>
-    </div>
-  );
+  const { setTitle, setShowBackButton } = useHeader();
+  useEffect(() => {
+    setShowBackButton(false);
+    setTitle(<span className="">Dynamic Page Title</span>);
+  }, []);
+  
+  return <div>Home Page</div>;
 }

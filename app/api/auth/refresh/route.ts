@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import {prisma} from "@/lib/prisma";
 import { generateAccessToken } from "@/lib/auth";
@@ -7,7 +6,7 @@ import { cookies } from "next/headers";
 
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET!;
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET() {
   
   const cookieStore = cookies();
   const refreshToken = (await cookieStore).get("refreshToken")?.value; 

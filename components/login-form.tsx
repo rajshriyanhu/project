@@ -14,12 +14,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { z } from "zod";
 import Link from "next/link";
 import { useSignIn } from "@/hooks/use-auth-hook";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@/hooks/use-user-hook";
 
 const formSchema = z.object({
   email: z.string().min(2).max(50),
@@ -29,10 +29,11 @@ const formSchema = z.object({
 export type LoginFormSchema = z.infer<typeof formSchema>;
 
 export default function LoginForm() {
+  const { saveUser } = useUser();
   const router = useRouter();
   const { toast } = useToast();
   const { mutateAsync: signin, isPending } = useSignIn();
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,6 +51,12 @@ export default function LoginForm() {
           title: "Login Successful!",
           description: `Welcome back, ${res.user.firstName} ${res.user.lastName}`,
         });
+        const userData = {
+          id: res.user.id,
+          firstName: res.user.firstName,
+          lastName: res.user.lastName,
+        };
+        saveUser(userData);
         router.push("/");
       })
       .catch((err) => {
@@ -61,7 +68,7 @@ export default function LoginForm() {
         });
       });
   }
-  
+
   return (
     <div className="flex flex-col gap-6">
       <Card className="overflow-hidden">
@@ -113,7 +120,7 @@ export default function LoginForm() {
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button disabled={isPending} type="submit" className="w-full">
                   Login
                 </Button>
                 <div className="relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t after:border-border">
@@ -160,11 +167,11 @@ export default function LoginForm() {
             </form>
           </Form>
 
-          <div className="relative hidden bg-muted md:block">
+          <div className="relative hidden md:block">
             <img
               src="/login.jpg"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </CardContent>

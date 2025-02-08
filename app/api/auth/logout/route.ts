@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const cookieStore = cookies();
   const refreshToken = (await cookieStore).get("refreshToken")?.value; 

@@ -5,6 +5,7 @@ import TanstackProvider from "@/provider/tanstack-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/provider/auth-provider";
 import { ThemeProvider } from "@/provider/theme-provider";
+import { HeaderProvider } from "@/hooks/useHeader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,14 +33,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-        >
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <AuthProvider>
-            <TanstackProvider>{children}</TanstackProvider>
-            <Toaster />
+            <HeaderProvider>
+              <TanstackProvider>{children}</TanstackProvider>
+              <Toaster />
+            </HeaderProvider>
           </AuthProvider>
         </ThemeProvider>
       </body>

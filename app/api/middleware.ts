@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const authenticate = (req: NextRequest) => {
+export const authenticate = (req: NextRequest) => {
   const authHeader = req.headers.get("Authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -14,3 +14,4 @@ const authenticate = (req: NextRequest) => {
 
   return null; 
 };
+

@@ -134,7 +134,7 @@ export function SignUpForm() {
                     )}
                   />
                 </div>
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={isPending}>
                   Sign Up
                 </Button>
 
@@ -148,11 +148,11 @@ export function SignUpForm() {
             </form>
           </Form>
 
-          <div className="relative hidden bg-muted md:block">
+          <div className="relative hidden md:block">
             <img
               src="/login.jpg"
               alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </CardContent>
