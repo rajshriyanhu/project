@@ -23,6 +23,8 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt()
   refreshTokens RefreshToken[]
+  TripUser      TripUser[]
+  Expense       Expense[]
 }
 
 model RefreshToken {
@@ -32,4 +34,56 @@ model RefreshToken {
   token     String   @unique
   expiresAt DateTime
   createdAt DateTime @default(now())
+}
+
+model Trip {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+  destination String
+  startDate   DateTime
+  endDate     DateTime
+  currency    String     @default("INR")
+  budget      Float?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt()
+  users       TripUser[]
+  expenses    Expense[]
+}
+
+model TripUser {
+  id     String   @id @default(uuid())
+  userId String
+  tripId String
+  role   TripRole @default(USER) // Role-Based Access
+  user   User     @relation(fields: [userId], references: [id])
+  trip   Trip     @relation(fields: [tripId], references: [id])
+
+  @@unique([userId, tripId]) // Prevent duplicate entries
+}
+
+enum TripRole {
+  OWNER
+  USER
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  tripId      String
+  userId      String
+  categoryId  String
+  amount      Float
+  description String?
+  date        DateTime @default(now())
+  receiptUrl  String? // Store receipts (if needed)
+  user        User     @relation(fields: [userId], references: [id])
+  trip        Trip     @relation(fields: [tripId], references: [id])
+  category    Category @relation(fields: [categoryId], references: [id])
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+
+  expenses Expense[]
 }

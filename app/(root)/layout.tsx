@@ -4,7 +4,9 @@ import Header from "@/components/header";
 import {
   SidebarInset,
   SidebarProvider,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { Separator } from "@radix-ui/react-separator";
 
 const layout = ({
   children,
@@ -21,6 +23,8 @@ const layout = ({
     >
       <AppSidebar />
       <SidebarInset>
+      
+
         <Header />
         <div className="py-4 px-2">{children}</div>
       </SidebarInset>

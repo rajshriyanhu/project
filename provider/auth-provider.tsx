@@ -80,5 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [isRefreshing]);
 
+  console.log(token)
+
   return <AuthContext.Provider value={{ token, setToken }}>{children}</AuthContext.Provider>;
 }

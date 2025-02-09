@@ -15,6 +15,7 @@ import { LogOut, Settings, User } from "lucide-react";
 import { useLogout } from "@/hooks/use-auth-hook";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/hooks/use-user-hook";
+import { SidebarTrigger } from "./ui/sidebar";
 
 const Header = () => {
   const { showBackButton, backUrl, title } = useHeader();
@@ -43,6 +44,8 @@ const Header = () => {
 
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
+      <SidebarTrigger className="-ml-1 block" />
+      <Separator orientation="vertical" className="mr-2 h-4" />
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center">
           {/* <SidebarTrigger className="-ml-1" />
@@ -66,7 +69,7 @@ const Header = () => {
                 {user ? user.firstName[0] + user.lastName[0] : "?"}
               </AvatarFallback>
             </Avatar>
-            <span>
+            <span className="hidden lg:block">
               {user?.firstName} {user?.lastName}
             </span>
           </DropdownMenuTrigger>
