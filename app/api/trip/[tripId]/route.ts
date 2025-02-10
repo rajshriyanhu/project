@@ -21,7 +21,11 @@ export async function GET(
             user: true,
           },
         },
-        expenses: true,
+        expenses: {
+          include: {
+            category: true,
+          },
+        },
       },
     });
     return NextResponse.json(trip, { status: 200 });
@@ -123,14 +127,26 @@ export async function DELETE(
       );
     }
 
-    const trip = await prisma.trip.delete({
+    await prisma.expense.deleteMany({
+      where: {
+        tripId: params.tripId,
+      },
+    });
+
+    await prisma.tripUser.deleteMany({
+      where: {
+        tripId: params.tripId,
+      },
+    });
+
+    await prisma.trip.delete({
       where: {
         id: params.tripId,
       },
     });
 
     return NextResponse.json(
-      { trip, message: "Trip deleted successfully." },
+      { message: "Trip deleted successfully." },
       { status: 200 }
     );
   } catch (error) {

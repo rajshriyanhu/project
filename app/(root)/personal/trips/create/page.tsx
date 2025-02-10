@@ -6,7 +6,7 @@ import { useHeader } from "@/hooks/useHeader";
 import { useEffect } from "react";
 
 const CreatetripPage = () => {
-  const { setTitle, setShowBackButton, setBackUrl } = useHeader();
+  const { setTitle, setShowBackButton } = useHeader();
   useEffect(() => {
     setTitle(<span className="text-xl font-semibold">Create a new trip</span>);
     setShowBackButton(false);

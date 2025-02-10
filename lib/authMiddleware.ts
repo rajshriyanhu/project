@@ -13,6 +13,7 @@ export async function authenticate(req: Request) {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as { userId: string };
     return decoded.userId; 
   } catch (err) {
+    console.log(err)
     return null;
   }
 }

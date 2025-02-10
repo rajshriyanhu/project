@@ -75,7 +75,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { tripId: string; expenseId: string } }
+  context: { params: { tripId: string; expenseId: string } }
 ) {
   try {
     const userId = await authenticate(req);
@@ -85,7 +85,7 @@ export async function DELETE(
 
     const tripUser = await prisma.tripUser.findFirst({
       where: {
-        tripId: params.tripId,
+        tripId: context.params.tripId,
         userId: userId,
         role: "OWNER",
       },
@@ -100,7 +100,7 @@ export async function DELETE(
 
     const expense = await prisma.expense.delete({
       where: {
-        id: params.expenseId,
+        id: context.params.expenseId,
       },
     });
 

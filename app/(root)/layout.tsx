@@ -4,9 +4,7 @@ import Header from "@/components/header";
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Separator } from "@radix-ui/react-separator";
 
 const layout = ({
   children,

@@ -10,6 +10,8 @@ import { Button } from "./ui/button";
 import { formatDateString } from "@/lib/utils";
 import { Trip } from "@/types";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import CreateExpenseModal from "./create-expense-modal";
 
 export default function TripCard({
   trip,
@@ -19,7 +21,9 @@ export default function TripCard({
   index: number;
 }) {
     const router = useRouter();
+    const [openModal, setOpenModal] = useState(false);
   return (
+    <>
     <Card className="w-[350px] relative overflow-hidden">
       <div
         className="absolute inset-0 bg-cover bg-center opacity-20"
@@ -39,25 +43,31 @@ export default function TripCard({
             {formatDateString(trip.endDate)}
           </div>
           <div>
-            Your Budget -
+            Your Budget - {' '}
             {new Intl.NumberFormat("en-IN", {
               style: "currency",
               currency: "INR",
             }).format(trip.budget)}
           </div>
           <div>
-            Current Expense -
+            Current Expense - {' '}
             {new Intl.NumberFormat("en-IN", {
               style: "currency",
               currency: "INR",
-            }).format(trip.budget)}
+            }).format(trip.totalExpenses)}
           </div>
         </CardContent>
         <CardFooter className="flex justify-end gap-4">
           <Button onClick={() => router.push(`/personal/trips/${trip.id}`)} variant="secondary">View Details</Button>
-          <Button variant="default">Add Expense</Button>
+          <Button onClick={() => setOpenModal(true)} variant="default">Add Expense</Button>
         </CardFooter>
       </div>
     </Card>
+    <CreateExpenseModal
+    tripId={trip.id}
+    isModalOpen={openModal}
+    setIsModalOpen={setOpenModal}
+  />
+  </>
   );
 }

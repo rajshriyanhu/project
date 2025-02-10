@@ -56,8 +56,22 @@ export async function GET(req: Request) {
             },
           },
         },
+        include: {
+          expenses: {
+            select: {
+              amount: true,
+            },
+          },
+        }
       });
-      return NextResponse.json(trips, { status: 200 });
+
+      const tripsWithTotal = trips.map(trip => ({
+        ...trip,
+        totalExpenses: trip.expenses.reduce((sum, expense) => sum + expense.amount, 0),
+        expenses: undefined, // Remove the expenses array
+      }));
+
+      return NextResponse.json(tripsWithTotal, { status: 200 });
     } catch (error) {
       console.error("Error fetching trips:", error);
       return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

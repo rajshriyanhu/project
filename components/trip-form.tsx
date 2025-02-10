@@ -61,7 +61,7 @@ export default function TripForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     await createTrip(values)
-    .then((res) => {
+    .then(() => {
       toast({
         title: 'Trip created successfully!'
       })
@@ -242,7 +242,7 @@ export default function TripForm() {
                         : ""
                     }
                     onChange={(e) => {
-                      let value = e.target.value.replace(/₹|,/g, ""); // Remove ₹ and commas
+                      const value = e.target.value.replace(/₹|,/g, ""); // Remove ₹ and commas
 
                       // Allow only numbers
                       if (/^\d*$/.test(value)) {

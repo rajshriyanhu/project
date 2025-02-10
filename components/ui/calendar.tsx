@@ -63,8 +63,8 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeftIcon className="size-4" />,
-        IconRight: ({ ...props }) => <ChevronRightIcon className="size-4" />,
+        IconLeft: ({ }) => <ChevronLeftIcon className="size-4" />,
+        IconRight: ({ }) => <ChevronRightIcon className="size-4" />,
         Dropdown: (props) => {
           const { fromYear, toYear } = useDayPicker();
           const { goToMonth, currentMonth } = useNavigation();

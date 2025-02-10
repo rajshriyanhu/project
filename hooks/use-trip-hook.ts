@@ -1,6 +1,6 @@
 import { TripFormSchema } from "@/components/trip-form";
 import api from "@/lib/axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useCreateTrip = () => {
   return useMutation({
@@ -30,3 +30,17 @@ export const useGetTripById = (tripId: string) => {
     }
   })
 }
+
+export const useDeleteTrip = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (tripId: string) => {
+      const response = await api.delete(`/trip/${tripId}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['allTrips'] });
+    },
+  });
+};
