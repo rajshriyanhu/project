@@ -8,15 +8,13 @@ import React, { useEffect } from "react";
 export default function ProfilePage() {
   const { data } = useGetLoggedInUser();
   const { user } = useUser();
-  const { setTitle, setShowBackButton, setBackUrl } = useHeader();
+  const { setTitle } = useHeader();
   useEffect(() => {
     setTitle(
       <span>
         {user?.firstName} {user?.lastName}
       </span>
     );
-    setShowBackButton(true);
-    setBackUrl("/");
   }, [user]);
   console.log(data)
 

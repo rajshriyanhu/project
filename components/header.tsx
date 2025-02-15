@@ -16,9 +16,10 @@ import { useLogout } from "@/hooks/use-auth-hook";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@/hooks/use-user-hook";
 import { SidebarTrigger } from "./ui/sidebar";
+import ThemeToggle from "./theme-toggle";
 
 const Header = () => {
-  const { showBackButton, backUrl, title } = useHeader();
+  const {title } = useHeader();
   const { mutateAsync: logout } = useLogout();
   const { user, clearUser } = useUser();
   const router = useRouter();
@@ -44,23 +45,14 @@ const Header = () => {
 
   return (
     <header className="flex h-16 shrink-0 items-center gap-2 px-4 border-b">
-      <SidebarTrigger className="-ml-1 block" />
+      <SidebarTrigger className="" />
       <Separator orientation="vertical" className="mr-2 h-4" />
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center">
-          {/* <SidebarTrigger className="-ml-1" />
-          <Separator orientation="vertical" className="mr-2 h-4" /> */}
-          {showBackButton && (
-            <>
-              <Link href={backUrl} className=" text-blue-500">
-                ← Back
-              </Link>
-              <Separator orientation="vertical" className="mx-4 h-4" />
-            </>
-          )}
           {title}
         </div>
 
+        <div className="gap-4 flex items-center">
         <DropdownMenu>
           <DropdownMenuTrigger className="focus:outline flex gap-2 mr-2 items-center p-1">
             <Avatar>
@@ -85,6 +77,8 @@ const Header = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <ThemeToggle />
+        </div>
       </div>
     </header>
   );

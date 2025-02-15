@@ -23,7 +23,7 @@ import { useToast } from "@/hooks/use-toast";
 const TripDetailsPage = () => {
   const params = useParams();
   const { data, isError, isLoading } = useGetTripById(params.tripId as string);
-  const { setTitle, setShowBackButton } = useHeader();
+  const { setTitle } = useHeader();
   const [openModal, setOpenModal] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const router = useRouter();
@@ -34,30 +34,29 @@ const TripDetailsPage = () => {
     setTitle(
       <Breadcrumb>
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/" className="text-lg font-semibold">
+          <BreadcrumbItem className="hidden lg:block">
+            <BreadcrumbLink href="/">
               Home
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
+          <BreadcrumbSeparator className="hidden lg:block"/>
+          <BreadcrumbItem className="hidden lg:block">
             <BreadcrumbLink
               href="/personal/trips"
-              className="text-lg font-semibold"
+              className="hidden lg:block"
             >
               Trips
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator />
+          <BreadcrumbSeparator className="hidden lg:block"/>
           <BreadcrumbItem>
-            <BreadcrumbPage className="text-lg font-semibold capitalize">
+            <BreadcrumbPage>
               {data?.name}
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
     );
-    setShowBackButton(false);
   }, [data]);
 
   if (isLoading) {
@@ -87,16 +86,21 @@ const TripDetailsPage = () => {
     });
   };
 
-  console.log(data);
   const trip = data as Trip;
   return (
     <div className="flex flex-col gap-4 px-2">
-      <div className="flex justify-between">
+      <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
         <span className="text-lg font-semibold capitalize">{trip.name}</span>
-        <div className="flex gap-2">
-          <Button onClick={() => setOpenModal(true)}>Add Expense</Button>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button 
+            className="flex-1 sm:flex-initial" 
+            onClick={() => setOpenModal(true)}
+          >
+            Add Expense
+          </Button>
           <Button
             variant="destructive"
+            className="flex-1 sm:flex-initial"
             onClick={() => setShowDeleteDialog(true)}
           >
             Delete Trip

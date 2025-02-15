@@ -18,24 +18,24 @@ export const SideNavbarData = {
           },
         ],
       },
-      {
-        title: "Manage Expenses with Friends",
-        url: "#",
-        items: [
-          {
-            title: "Trips",
-            url: "#",
-          },
-          {
-            title: "Friends",
-            url: "#",
-            isActive: true,
-          },
-          {
-            title: "Rendering",
-            url: "#",
-          },
-        ],
-      },
+      // {
+      //   title: "Manage Expenses with Friends",
+      //   url: "#",
+      //   items: [
+      //     {
+      //       title: "Trips",
+      //       url: "#",
+      //     },
+      //     {
+      //       title: "Friends",
+      //       url: "#",
+      //       isActive: true,
+      //     },
+      //     {
+      //       title: "Rendering",
+      //       url: "#",
+      //     },
+      //   ],
+      // },
     ],
   }

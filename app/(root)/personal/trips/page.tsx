@@ -7,16 +7,14 @@ import { Trip } from "@/types";
 import { useEffect } from "react";
 
 export default function TripPage() {
-  const { setTitle, setShowBackButton } = useHeader();
+  const { setTitle } = useHeader();
   const {data, isLoading, isError} = useGetAllTrips();
-  console.log(data);
     useEffect(() => {
       setTitle(
         <span className="text-xl font-semibold">
           Manage your trips 
         </span>
       );
-      setShowBackButton(false);
     }, []);
 
   if(isLoading){

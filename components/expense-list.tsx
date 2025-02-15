@@ -69,7 +69,7 @@ export default function ExpenseList({ trip }: { trip: Trip }) {
         {trip.expenses.map((expense: Expense) => (
           <div
             key={expense.id}
-            className="flex items-center justify-between p-4 rounded-lg bg-secondary/50 hover:bg-secondary/80 transition-colors"
+            className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 rounded-lg bg-secondary/50 hover:bg-secondary/80 transition-colors gap-4 sm:gap-3"
           >
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-md bg-violet-500/10">
@@ -83,7 +83,7 @@ export default function ExpenseList({ trip }: { trip: Trip }) {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-4">
               <p className="text-lg font-semibold">
                 {new Intl.NumberFormat("en-IN", {
                   style: "currency",
