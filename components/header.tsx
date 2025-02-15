@@ -10,7 +10,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { useHeader } from "@/hooks/useHeader";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { LogOut, Settings, User } from "lucide-react";
 import { useLogout } from "@/hooks/use-auth-hook";
 import { useToast } from "@/hooks/use-toast";

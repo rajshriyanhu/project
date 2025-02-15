@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { tripId: string; expenseId: string; } }
+  { params }: { params: Promise<{ tripId: string; expenseId: string }> }
 ) {
   try {
     const userId = await authenticate(req);
@@ -15,14 +15,16 @@ export async function PATCH(
     const data = await req.json();
     const { categoryId, amount, description, date, receiptUrl } = data;
 
-    if ( !categoryId || !amount) {
+    if (!categoryId || !amount) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    const trip = await prisma.trip.findUnique({ where: { id: params.tripId } });
+    const { tripId, expenseId } = await params; 
+
+    const trip = await prisma.trip.findUnique({ where: { id: tripId } });
     if (!trip) {
       return NextResponse.json({ error: "Trip not found" }, { status: 404 });
     }
@@ -38,7 +40,7 @@ export async function PATCH(
     }
 
     const tripUser = await prisma.tripUser.findFirst({
-      where: { tripId: params.tripId, userId: userId },
+      where: { tripId: tripId, userId: userId },
     });
     if (!tripUser) {
       return NextResponse.json(
@@ -49,15 +51,15 @@ export async function PATCH(
 
     const expense = await prisma.expense.update({
       where: {
-        id: params.expenseId,
+        id: expenseId,
       },
       data: {
         amount,
         categoryId,
         description,
         date,
-        receiptUrl
-      }
+        receiptUrl,
+      },
     });
     return NextResponse.json(
       { message: "Expense updated successfully", expense },
@@ -72,10 +74,9 @@ export async function PATCH(
   }
 }
 
-
 export async function DELETE(
   req: Request,
-  context: { params: { tripId: string; expenseId: string } }
+  { params }: { params: Promise<{ tripId: string; expenseId: string }> }
 ) {
   try {
     const userId = await authenticate(req);
@@ -83,10 +84,12 @@ export async function DELETE(
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
+    const { tripId, expenseId } = await params; // tripId & expenseId are now inferred as strings
+
     const tripUser = await prisma.tripUser.findFirst({
       where: {
-        tripId: context.params.tripId,
-        userId: userId,
+        tripId,
+        userId,
         role: "OWNER",
       },
     });
@@ -100,7 +103,7 @@ export async function DELETE(
 
     const expense = await prisma.expense.delete({
       where: {
-        id: context.params.expenseId,
+        id: expenseId,
       },
     });
 

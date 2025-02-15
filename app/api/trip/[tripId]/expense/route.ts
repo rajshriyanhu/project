@@ -4,7 +4,7 @@ import { authenticate } from "@/lib/authMiddleware";
 
 export async function POST(
   req: Request,
-  { params }: { params: { tripId: string } }
+  { params }: { params: Promise<{ tripId: string; }> }
 ) {
   try {
     const userId = await authenticate(req);
@@ -22,7 +22,9 @@ export async function POST(
       );
     }
 
-    const trip = await prisma.trip.findUnique({ where: { id: params.tripId } });
+    const {tripId} = await params;
+
+    const trip = await prisma.trip.findUnique({ where: { id: tripId } });
     if (!trip) {
       return NextResponse.json({ error: "Trip not found" }, { status: 404 });
     }
@@ -38,7 +40,7 @@ export async function POST(
     }
 
     const tripUser = await prisma.tripUser.findFirst({
-      where: { tripId: params.tripId, userId: userId },
+      where: { tripId: tripId, userId: userId },
     });
     if (!tripUser) {
       return NextResponse.json(
@@ -49,7 +51,7 @@ export async function POST(
 
     const expense = await prisma.expense.create({
       data: {
-        tripId : params.tripId,
+        tripId : tripId,
         userId: userId,
         categoryId,
         amount,
@@ -74,7 +76,7 @@ export async function POST(
 
 export async function GET(
   req: Request,
-  { params }: { params: { tripId: string } }
+  { params }: { params: Promise<{ tripId: string }> }
 ) {
   try {
     const userId = await authenticate(req);
@@ -82,9 +84,10 @@ export async function GET(
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
+    const {tripId} = await params;
     const expenses = await prisma.expense.findMany({
       where: {
-        tripId: params.tripId,
+        tripId: tripId,
       },
     });
     return NextResponse.json(expenses, { status: 200 });

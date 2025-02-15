@@ -4,7 +4,7 @@ import { authenticate } from "@/lib/authMiddleware";
 
 export async function POST(
   req: Request,
-  { params }: { params: { tripId: string } }
+  { params }: { params: Promise<{ tripId: string }> }
 ) {
   try {
     const userId = await authenticate(req);
@@ -14,7 +14,7 @@ export async function POST(
 
     const data = await req.json();
     const { userId : guestUserId, role  } = data;
-
+    const {tripId} = await params;
 
     if (!guestUserId || !role) {
       return NextResponse.json(
@@ -27,7 +27,7 @@ export async function POST(
         data : {
             userId: guestUserId,
             role : role,
-            tripId: params.tripId
+            tripId: tripId
         }
     });
     
@@ -46,17 +46,17 @@ export async function POST(
 
 export async function GET(
   req: Request,
-  { params }: { params: { tripId: string } }
+  { params }: { params: Promise<{ tripId: string }> }
 ) {
   try {
     const userId = await authenticate(req);
     if (!userId) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
-
+    const {tripId} = await params;
     const users = await prisma.tripUser.findMany({
       where: {
-        tripId: params.tripId,
+        tripId: tripId,
       },
     });
     return NextResponse.json(users, { status: 200 });

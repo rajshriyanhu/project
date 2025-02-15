@@ -4,16 +4,17 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { tripId: string } }
+  { params }: { params: Promise<{ tripId: string }> }
 ) {
   try {
     const userId = await authenticate(req);
     if (!userId) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
+    const { tripId } = await params;
     const trip = await prisma.trip.findFirst({
       where: {
-        id: params.tripId,
+        id: tripId,
       },
       include: {
         users: {
@@ -40,17 +41,17 @@ export async function GET(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { tripId: string } }
+  { params }: { params: Promise<{ tripId: string }> }
 ) {
   try {
     const userId = await authenticate(req);
     if (!userId) {
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
-
+    const { tripId } = await params;
     const tripUser = await prisma.tripUser.findFirst({
       where: {
-        tripId: params.tripId,
+        tripId: tripId,
         userId: userId,
         role: "OWNER",
       },
@@ -76,7 +77,7 @@ export async function PATCH(
 
     const trip = await prisma.trip.update({
       where: {
-        id: params.tripId,
+        id: tripId,
       },
       data: {
         name,
@@ -104,7 +105,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { tripId: string } }
+  { params }: { params: Promise<{ tripId: string }> }
 ) {
   try {
     const userId = await authenticate(req);
@@ -112,9 +113,11 @@ export async function DELETE(
       return NextResponse.json({ error: "Invalid token" }, { status: 401 });
     }
 
+    const { tripId } = await params;
+
     const tripUser = await prisma.tripUser.findFirst({
       where: {
-        tripId: params.tripId,
+        tripId: tripId,
         userId: userId,
         role: "OWNER",
       },
@@ -129,19 +132,19 @@ export async function DELETE(
 
     await prisma.expense.deleteMany({
       where: {
-        tripId: params.tripId,
+        tripId: tripId,
       },
     });
 
     await prisma.tripUser.deleteMany({
       where: {
-        tripId: params.tripId,
+        tripId: tripId,
       },
     });
 
     await prisma.trip.delete({
       where: {
-        id: params.tripId,
+        id: tripId,
       },
     });
 
